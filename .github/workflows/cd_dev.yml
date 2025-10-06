@@ -1,4 +1,5 @@
 name: Deploy to staging
+
 on:
   push:
     branches: [ main ]
@@ -8,11 +9,25 @@ jobs:
     runs-on: ubuntu-latest
     name: Deploying everything to the staging cluster
     steps:
-      - run: |
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" &> ~/ssh_key
-          mkdir -p /home/runner/.ssh
-          ls /home/runner/.ssh
-          touch /home/runner/.ssh/known_hosts
-          echo "${{ secrets.KNOWN_HOSTS }}" &> /home/runner/.ssh/known_hosts
-          chmod 700 /home/runner/ssh_key
-          ssh -i ~/ssh_key root@18.142.53.167 -t "cd bookmyshowtype/ && git pull origin main && export PATH=/root/.nvm/versions/node/v22.13.1/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin && npm install -g pnpm && pnpm install && pnpm run build && pm2 restart fe-sever && pm2 restart http-sever && pm2 restart ws-sever"
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/ssh_key
+          chmod 600 ~/.ssh/ssh_key
+          ssh-keyscan -H 18.142.53.167 >> ~/.ssh/known_hosts
+          
+      - name: Deploy to EC2
+        run: |
+          ssh -i ~/.ssh/ssh_key -o StrictHostKeyChecking=no root@18.142.53.167 << 'EOF'
+            set -e
+            cd /root/bookmyshowtype/
+            git pull origin main
+            export PATH=/root/.nvm/versions/node/v22.13.1/bin:$PATH
+            npm install -g pnpm
+            pnpm install
+            pnpm run build
+            pm2 restart fe-sever || pm2 start fe-sever
+            pm2 restart http-sever || pm2 start http-sever
+            pm2 restart ws-sever || pm2 start ws-sever
+            echo "Deployment completed successfully!"
+          EOF
