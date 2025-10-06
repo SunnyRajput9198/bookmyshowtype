@@ -16,14 +16,14 @@ jobs:
           echo "${{ secrets.KNOWN_HOSTS }}" &> /home/runner/.ssh/known_hosts
           chmod 700 /home/runner/ssh_key
           ssh -i ~/ssh_key ubuntu@18.142.53.167 << 'ENDSSH'
-            cd bookmyshowtype/
-            git pull origin main && export PATH=
-            /home/ubuntu/.nvm/versions/node/v22.20.0/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin &&
-            npm install -g pnpm
-            pnpm install
-            pnpm run build
-            pm2 restart fe-sever
-            pm2 restart http-sever
-            pm2 restart ws-sever
-            echo "Deployment completed successfully!"
+          export PATH="/home/ubuntu/.nvm/versions/node/v22.20.0/bin:$PATH"
+          cd bookmyshowtype/
+          git pull origin main
+          npm install -g pnpm
+          pnpm install
+          pnpm run build
+          pm2 restart fe-sever
+          pm2 restart http-sever
+          pm2 restart ws-sever
+          echo "Deployment completed successfully!"
           ENDSSH
