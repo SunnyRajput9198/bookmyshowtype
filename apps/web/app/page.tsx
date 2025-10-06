@@ -14,6 +14,7 @@ export default async function Home() {
           user.map((user) => (
             <div key={user.id} className="border p-4 rounded">
               <div>
+                <h1>Sunny rajput</h1>
                 <strong>Username:</strong> {user.username}
               </div>
               <div>
