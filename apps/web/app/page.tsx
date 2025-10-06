@@ -10,7 +10,7 @@ export default async function Home() {
       <div className="space-y-4">
         {user.length === 0 ? (
           <p>No users found
-            <br />
+            <br /> 
             <h1>sunny rajput</h1>
           </p>
         ) : (
