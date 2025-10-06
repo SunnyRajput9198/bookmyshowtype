@@ -15,4 +15,16 @@ jobs:
           touch /home/runner/.ssh/known_hosts
           echo "${{ secrets.KNOWN_HOSTS }}" &> /home/runner/.ssh/known_hosts
           chmod 700 /home/runner/ssh_key
-          ssh -i ~/ssh_key ubuntu@18.142.53.167 -t "cd bookmyshowtype/ && git pull origin main && export NVM_DIR=\"\$HOME/.nvm\" && [ -s \"\$NVM_DIR/nvm.sh\" ] && . \"\$NVM_DIR/nvm.sh\" && npm install -g pnpm && pnpm install && pnpm run build && pm2 restart fe-sever && pm2 restart http-sever && pm2 restart ws-sever"
+          ssh -i ~/ssh_key ubuntu@18.142.53.167 << 'ENDSSH'
+            cd bookmyshowtype/
+            git pull origin main
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+            npm install -g pnpm
+            pnpm install
+            pnpm run build
+            pm2 restart fe-sever
+            pm2 restart http-sever
+            pm2 restart ws-sever
+            echo "Deployment completed successfully!"
+          ENDSSH
