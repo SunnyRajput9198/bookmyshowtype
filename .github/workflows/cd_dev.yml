@@ -17,9 +17,8 @@ jobs:
           chmod 700 /home/runner/ssh_key
           ssh -i ~/ssh_key ubuntu@18.142.53.167 << 'ENDSSH'
             cd bookmyshowtype/
-            git pull origin main
-            export NVM_DIR="$HOME/.nvm"
-            [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+            git pull origin main && export PATH=
+            /home/ubuntu/.nvm/versions/node/v22.20.0/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin &&
             npm install -g pnpm
             pnpm install
             pnpm run build
