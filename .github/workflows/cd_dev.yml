@@ -19,7 +19,7 @@ jobs:
           export PATH="/home/ubuntu/.nvm/versions/node/v22.20.0/bin:$PATH"
           cd bookmyshowtype/
           git pull origin main
-          npm install -g pnpm
+          npm install -g pnpm 
           pnpm install
           pnpm run build
           pm2 restart fe-server
