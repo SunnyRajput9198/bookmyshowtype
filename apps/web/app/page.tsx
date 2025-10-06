@@ -9,12 +9,15 @@ export default async function Home() {
       <h1 className="text-2xl font-bold mb-4">All Users</h1>
       <div className="space-y-4">
         {user.length === 0 ? (
-          <p>No users found</p>
+          <p>No users found
+            <br />
+            <h1>sunny rajput</h1>
+          </p>
         ) : (
           user.map((user) => (
             <div key={user.id} className="border p-4 rounded">
-              <div>
                 <h1>Sunny rajput</h1>
+              <div>
                 <strong>Username:</strong> {user.username}
               </div>
               <div>
